@@ -6,21 +6,6 @@
 //     playGround.classList.remove('hidden')
 // }
 
-function play(){
-    hideElementById('home-screen');
-    hideElementById('final-score');
-    showElementById('play-ground');
-
-    setTextElementValueById('current-life', 5);
-    setTextElementValueById('current-score', 0)
-    continueGame();
-}
-
-function gameOver(){
-    hideElementById('play-ground');
-    showElementById('final-score');
-}
-
 function continueGame(){
     const alphabet = getARandomAlphabet()
 
@@ -35,6 +20,11 @@ function continueGame(){
 function handleKeyboardButtonPress(event){
     const playerPressed = event.key;
     console.log("player pressed", event.key);
+
+    // stop the game if pressed 'Esc'
+    if(playerPressed === 'Escape'){
+        gameOver();
+    }
 
     // get the expected alphabet
     const currentAlphabetElement = document.getElementById('current-alphabet');
@@ -75,6 +65,28 @@ function handleKeyboardButtonPress(event){
             gameOver();
         }
     }
+}
+
+function play(){
+    hideElementById('home-screen');
+    hideElementById('final-score');
+    showElementById('play-ground');
+
+    setTextElementValueById('current-life', 5);
+    setTextElementValueById('current-score', 0)
+    continueGame();
+}
+
+function gameOver(){
+    hideElementById('play-ground');
+    showElementById('final-score');
+
+    const lastScore = getTextElementValueById('current-score');
+    setTextElementValueById('game-score', lastScore);
+
+    // clear the last selected alphabet highlight
+    const currentAlphabet = getElementTextById('current-alphabet');
+    removeBackgroundColorById(currentAlphabet);
 }
 
 document.addEventListener('keyup', handleKeyboardButtonPress)
